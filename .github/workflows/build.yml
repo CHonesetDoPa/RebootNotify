@@ -1,0 +1,37 @@
+name: Build Binaries
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Build for ${{ matrix.arch }}
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        arch:
+          - GOARCH: amd64
+            label: x86_64
+          - GOARCH: arm64
+            label: arm64
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.26'
+          check-latest: true
+
+      - name: Build binary
+        run: |
+          GOOS=linux GOARCH=${{ matrix.arch.GOARCH }} go build -ldflags="-s -w" -o "RebootNotify-linux-${{ matrix.arch.label }}" .
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: RebootNotify-linux-${{ matrix.arch.label }}
+          path: RebootNotify-linux-${{ matrix.arch.label }}
+          if-no-files-found: error
