@@ -33,3 +33,7 @@ go.work.sum
 
 # Configuration files
 config.yaml
+
+# Manual Builds
+RebootNotify-linux-arm64
+RebootNotify-linux-x86_64
