@@ -1,9 +1,9 @@
-telegram:
-  token: "YOUR_BOT_TOKEN"
-  chat_id: "YOUR_CHAT_ID"
-proxy:
-  enabled: false
-  server: "http://127.0.0.1:7890"
+agent_id: "replace-with-a-stable-uuid"
+controller:
+  enabled: true
+  url: "http://127.0.0.1:3980"
+  token: "change-me"
+  interval: 60
 reboot_file: "/var/run/reboot-required"
 reboot_interval: 3600
 upgrade_check:

@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>RebootNotify / Control Room</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <main class="shell">
+    <header class="topbar">
+      <div class="brand"><span class="brand-mark">RN</span><div><strong>RebootNotify</strong><small>CONTROL ROOM</small></div></div>
+      <div class="connection"><span class="pulse"></span><span id="connection-label">连接中</span><button class="nav-button active" data-view="dashboard">概览</button><button class="nav-button" data-view="settings">设置</button><button class="icon-button" id="refresh" title="刷新数据">↻</button></div>
+    </header>
+
+    <section class="intro dashboard-view">
+      <div><p class="eyebrow">系统状态 / 代理编排</p><h1>主机健康，一眼掌握。</h1><p class="lede">集中查看重启需求、可升级软件包，并把维护动作安全地发回每台 Agent。</p></div>
+      <div class="last-sync">最近同步 <strong id="last-sync">--</strong></div>
+    </section>
+
+    <section class="stats dashboard-view" aria-label="统计概览">
+      <article class="stat"><span class="stat-label">登记主机</span><strong id="total">0</strong><span class="stat-foot">全部 Agent</span></article>
+      <article class="stat accent-green"><span class="stat-label">在线</span><strong id="online">0</strong><span class="stat-foot">近 3 分钟有报告</span></article>
+      <article class="stat accent-red"><span class="stat-label">需要重启</span><strong id="reboot-required">0</strong><span class="stat-foot">等待维护</span></article>
+      <article class="stat accent-amber"><span class="stat-label">可升级软件</span><strong id="upgrades">0</strong><span class="stat-foot">跨主机合计</span></article>
+    </section>
+
+    <section class="workspace dashboard-view">
+      <div class="section-heading"><div><p class="eyebrow">AGENTS / INVENTORY</p><h2>主机清单</h2></div><div class="list-tools"><input id="agent-search" type="search" placeholder="搜索主机"><select id="agent-filter"><option value="all">全部状态</option><option value="online">仅在线</option><option value="offline">仅离线</option><option value="attention">需要处理</option></select><span id="agent-count" class="count">0 台</span></div></div>
+      <div id="agent-list" class="agent-list"><div class="empty">正在读取 Agent 状态...</div></div>
+    </section>
+
+    <section class="workspace history-section dashboard-view">
+      <div class="section-heading"><div><p class="eyebrow">COMMANDS / AUDIT TRAIL</p><h2>操作记录</h2></div><div class="list-tools"><select id="command-filter"><option value="all">全部命令</option><option value="active">执行中</option><option value="succeeded">已完成</option><option value="failed">失败</option></select><span class="count">保留最近 500 条</span></div></div>
+      <div id="command-list" class="command-list"><div class="empty">暂无操作记录</div></div>
+    </section>
+
+    <section id="settings-view" class="settings-view" hidden>
+      <div class="section-heading"><div><p class="eyebrow">SETTINGS / NOTIFICATIONS</p><h2>通知设置</h2></div><span class="count">配置保存在面板本地</span></div>
+      <form id="settings-form" class="settings-form">
+        <div class="settings-block">
+          <div class="settings-title"><div><h3>Telegram 推送</h3><p>将主机状态变化和维护结果发送到 Telegram。</p></div><label class="switch"><input id="telegram-enabled" type="checkbox"><span></span></label></div>
+          <div class="form-grid"><label>Bot Token<input id="telegram-token" type="password" placeholder="留空以保留当前 Token" autocomplete="off"><small id="telegram-token-state"></small></label><label>Chat ID<input id="telegram-chat-id" type="text" placeholder="例如：-1001234567890" autocomplete="off"></label></div>
+          <div class="notify-options"><label><input id="notify-reboot" type="checkbox">检测到需要重启</label><label><input id="notify-offline" type="checkbox">Agent 离线</label><label><input id="notify-upgrade" type="checkbox">发现可升级软件</label><label><input id="notify-command" type="checkbox">维护命令完成</label><label><input id="notify-error" type="checkbox">Agent 检查异常</label></div>
+          <div class="form-actions"><button class="action" type="submit">保存设置</button><button class="action" id="telegram-test" type="button">发送测试消息</button></div>
+        </div>
+        <div class="settings-block proxy-block"><div class="settings-title"><div><h3>Telegram 网络代理</h3><p>Telegram 无法直连时，可通过 HTTP 或 SOCKS5 代理访问。</p></div><label class="switch"><input id="proxy-enabled" type="checkbox"><span></span></label></div><label class="proxy-field">代理地址<input id="proxy-url" type="url" placeholder="socks5://127.0.0.1:1080" autocomplete="off"><small>支持 http://、socks5://、socks5h://，可包含用户名和密码。</small></label></div>
+      </form>
+    </section>
+  </main>
+  <div id="toast" class="toast" role="status"></div>
+  <script src="/app.js"></script>
+</body>
+</html>

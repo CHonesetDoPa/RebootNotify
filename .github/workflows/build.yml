@@ -21,13 +21,15 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@v5
         with:
-          go-version-file: go.mod
+          go-version-file: agent/go.mod
           cache: true
 
       - name: Test
+        working-directory: agent
         run: go test ./...
 
       - name: Vet
+        working-directory: agent
         run: go vet ./...
 
       - name: Build Ubuntu binaries
@@ -46,7 +48,7 @@ jobs:
               -trimpath \
               -ldflags="-s -w" \
               -o "dist/RebootNotify-linux-${arch}" \
-              .
+              ./agent
 
             chmod +x "dist/RebootNotify-linux-${arch}"
           done

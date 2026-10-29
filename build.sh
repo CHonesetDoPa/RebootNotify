@@ -17,7 +17,7 @@ build_binary() {
     local goarch=$3
 
     echo -e "${YELLOW}• Building for ${label}...${NC}"
-    CGO_ENABLED=0 go build -trimpath -ldflags="-s -w" -o "RebootNotify-linux-${label}" .
+    (cd agent && CGO_ENABLED=0 GOOS=linux GOARCH="${goarch}" go build -trimpath -ldflags="-s -w" -o "../RebootNotify-linux-${label}" .)
     echo -e "${GREEN}• Built RebootNotify-linux-${label}${NC}"
 }
 
