@@ -22,6 +22,7 @@ jobs:
         uses: actions/setup-go@v5
         with:
           go-version-file: agent/go.mod
+          cache-dependency-path: agent/go.sum
           cache: true
 
       - name: Test
@@ -44,11 +45,11 @@ jobs:
             GOOS=linux \
             GOARCH="${arch}" \
             CGO_ENABLED=0 \
-            go build \
+            (cd agent && go build \
               -trimpath \
               -ldflags="-s -w" \
-              -o "dist/RebootNotify-linux-${arch}" \
-              ./agent
+              -o "../dist/RebootNotify-linux-${arch}" \
+              .)
 
             chmod +x "dist/RebootNotify-linux-${arch}"
           done
