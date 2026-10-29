@@ -42,10 +42,11 @@ jobs:
           for arch in amd64 arm64; do
             echo "Building linux/${arch}"
 
-            GOOS=linux \
-            GOARCH="${arch}" \
-            CGO_ENABLED=0 \
-            (cd agent && go build \
+            (cd agent && \
+              GOOS=linux \
+              GOARCH="${arch}" \
+              CGO_ENABLED=0 \
+              go build \
               -trimpath \
               -ldflags="-s -w" \
               -o "../dist/RebootNotify-linux-${arch}" \
